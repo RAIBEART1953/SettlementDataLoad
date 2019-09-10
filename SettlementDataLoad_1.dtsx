@@ -1,0 +1,875 @@
+﻿<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="8/7/2019 1:26:28 PM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="EC2AMAZ-GQJ0QHR"
+  DTS:CreatorName="EC2AMAZ-GQJ0QHR\rstewart"
+  DTS:DTSID="{7B2BA01D-7D69-4629-8C3B-D527DB295F50}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="15.0.1301.433"
+  DTS:LocaleID="1033"
+  DTS:ObjectName="SettlementDataLoad_1"
+  DTS:PackageType="5"
+  DTS:VersionBuild="3"
+  DTS:VersionGUID="{81B5D1BB-CC70-48A3-B464-EE9C4FE495C8}">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:ConnectionManagers>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[RedshiftProd32.rstewart]"
+      DTS:CreationName="ODBC"
+      DTS:DTSID="{3287B6DE-F745-450F-AE94-491765673C68}"
+      DTS:ObjectName="RedshiftProd32.rstewart">
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="uid=rstewart;Dsn=RedshiftProd32;">
+          <DTS:Password
+            DTS:Name="pwd"
+            Sensitive="1"
+            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAwBOuxLnrgECzQK6HR+NDbwAAAAAIAAAARABUAFMAAAAQZgAAAAEAACAAAADYUUmory4EIVUrkf2XpurpoHOpO366GIjnH7RwXoBdGAAAAAAOgAAAAAIAACAAAABJyQIyAhmGiVsqbll9chEctceZo2V3Ds50PBEdHqzMjSAAAAC+/n+SLph9FjTg6rgelO8KvYhZ50VfbG4rglYoKyLNF0AAAAC+DdheqNVFTEjp18lrHSJUoQOwpZkH31Ys+kR7HfXN7mAIrCkC5IGI3OVgCOqBLdFA+Zkzge6yRI+yziFE+0co</DTS:Password>
+        </DTS:ConnectionManager>
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+  </DTS:ConnectionManagers>
+  <DTS:Variables />
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\Scorecard"
+      DTS:CreationName="Microsoft.Pipeline"
+      DTS:Description="Data Flow Task"
+      DTS:DTSID="{AC5E4811-E5CE-47F1-A8B8-30C3AB0DF55B}"
+      DTS:ExecutableType="Microsoft.Pipeline"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Scorecard"
+      DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <pipeline
+          version="1">
+          <components>
+            <component
+              refId="Package\Scorecard\Scorecard"
+              componentClassID="Attunity.SSISODBCSrc"
+              description="ODBC Source"
+              name="Scorecard"
+              usesDispositions="true"
+              version="7">
+              <properties>
+                <property
+                  dataType="System.String"
+                  description="The name of the table to be fetched."
+                  expressionType="Notify"
+                  name="TableName"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  expressionType="Notify"
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=15.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">SELECT DISTINCT cad.client_account_id,
+                cad.business_dt,
+                cast(substring(cad.tradelineid, 4, 50) as int)      as tradeline_id,
+                cad.tradelineid,
+                cad.programid,
+                cad.creditor_accepted_ratio,
+                cad.creditor,
+                cad.eligibility,
+                cad.creditor_score,
+                cad.state_of_residency,
+                cast(cad.avg_monthly_payment as int)                as avg_monthly_payment,
+                cad.account_delinquency,
+                cast((cad.creditor_accepted_ratio * 100) as int)    as pct_avg_settlement,
+                cad.fee_funding_pct,
+                cad.fee,
+                substring(cad.account_status, 1, 25)                as account_status,
+                cad.enrolled_debt,
+                assu.account_total_score                            as totalscore,
+                assu.account_total_score_rank                       as rank,
+                assu.account_program_rank                           as accountrepeatcountbyindex,
+                NULL                                                as calculatedcreditscore,
+                assu.account_index_value                            as concatenatedindex,
+                getdate()                                           as createdat,
+                getdate()                                           as updatedat,
+                cad.account_balance                                 as balance,
+                TRIM((CAST(ROUND(cad.creditor_accepted_ratio * 100, 0) as varchar(4)) || ' pct.' || ' over ' ||
+                      substring(cad.accepted_creditor_terms, 1, 10) || ' ' ||
+                      substring(cad.accepted_payment, 1, 10)))      AS creditor_terms,
+                cad.fund_accumulated                                as endofcurrentmonthfundaccumulation,
+                cad.last_worked_on                                  as lastworkedon,
+                tl.id                                               as sf_tl_id,
+                cad.cft_funds,
+                cad.pct_funds_available,
+                cad.prospect_uuid,
+                'Beyond'                                            as firm_name,
+                pg.client_first_name__c + ' ' + client_last_name__c AS full_name,
+                0                                                   as draft_amount,
+                pg.createddate                                      as enrolled_dt,
+                0                                                   as previousSettlements
+FROM setl.client_account_data cad
+         JOIN setl.account_score acsc
+              ON acsc.client_account_id = cad.client_account_id AND acsc.business_dt = cad.business_dt AND
+                 acsc.run_number = cad.run_number
+         JOIN setl.account_score_summary assu
+              on cad.client_account_id = assu.client_account_id AND assu.business_dt = cad.business_dt AND
+                 cad.run_number = assu.run_number
+         JOIN datalake_sf.sf_nu_dse_tradeline_c_src tl ON tl.name = cad.tradelineid
+         JOIN datalake_sf.sf_nu_dse_program_c_src pg on pg.id = tl.nu_dse__program__c
+WHERE cad.business_dt = (SELECT max(business_dt) FROM setl.processing_calendar)
+  AND cad.run_number = (SELECT max(run_number)
+                        FROM setl.processing_calendar
+                        WHERE business_dt = (SELECT max(business_dt) FROM setl.processing_calendar))
+ORDER BY assu.account_total_score desc, assu.account_total_score_rank;</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specify the number of rows fetched per batch."
+                  expressionType="Notify"
+                  name="BatchSize">1000</property>
+                <property
+                  dataType="System.Int32"
+                  description="Determines the chunk size allocation for LOB columns"
+                  expressionType="Notify"
+                  name="LobChunkSize">32768</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Determines how the component exposes CHAR columns. If False, CHAR columns are exposed as (multi-)byte strings (DT_STR), if True, CHAR columns are exposed as wide strings (DT_WSTR)"
+                  expressionType="Notify"
+                  name="ExposeCharColumnsAsUnicode">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds to wait for an SQL statement to execute before returning to the application."
+                  expressionType="Notify"
+                  name="StatementTimeout">0</property>
+                <property
+                  dataType="System.Int32"
+                  description="The code page to use when code page information is unavailable from the data source."
+                  expressionType="Notify"
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Int32"
+                  description="The method used for fetching data."
+                  expressionType="Notify"
+                  name="FetchMethod">1</property>
+                <property
+                  dataType="System.Int32"
+                  description="The ODBC C data type for binding numeric data."
+                  expressionType="Notify"
+                  name="BindNumericAs">0</property>
+                <property
+                  dataType="System.Int32"
+                  description="Determines how the component would bind columns of (multi)-byte string types (i.e., SQL_CHAR, SQL_VARCHAR, SQL_LONGVARCHAR). The options are: Unicode (SQL_C_WCHAR) and ANSI (SQL_C_CHAR)."
+                  expressionType="Notify"
+                  name="BindCharColumnsAs">0</property>
+                <property
+                  dataType="System.Int32"
+                  description="The mode used to access the database."
+                  expressionType="Notify"
+                  name="AccessMode"
+                  typeConverter="AccessMode">1</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Scorecard\Scorecard.Connections[ODBCConnection]"
+                  connectionManagerID="Package.ConnectionManagers[RedshiftProd32.rstewart]"
+                  connectionManagerRefId="Package.ConnectionManagers[RedshiftProd32.rstewart]"
+                  description="The ODBC runtime connection used to access the database."
+                  name="ODBCConnection" />
+              </connections>
+              <outputs>
+                <output
+                  refId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output]"
+                  errorRowDisposition="FailComponent"
+                  name="ODBC Source Output"
+                  truncationRowDisposition="FailComponent">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].Columns[client_account_id]"
+                      dataType="i8"
+                      externalMetadataColumnId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].ExternalColumns[client_account_id]"
+                      lineageId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].Columns[client_account_id]"
+                      name="client_account_id" />
+                    <outputColumn
+                      refId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].Columns[business_dt]"
+                      dataType="dbTimeStamp"
+                      externalMetadataColumnId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].ExternalColumns[business_dt]"
+                      lineageId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].Columns[business_dt]"
+                      name="business_dt" />
+                    <outputColumn
+                      refId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].Columns[tradeline_id]"
+                      dataType="i4"
+                      externalMetadataColumnId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].ExternalColumns[tradeline_id]"
+                      lineageId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].Columns[tradeline_id]"
+                      name="tradeline_id" />
+                    <outputColumn
+                      refId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].Columns[tradelineid]"
+                      dataType="wstr"
+                      externalMetadataColumnId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].ExternalColumns[tradelineid]"
+                      length="50"
+                      lineageId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].Columns[tradelineid]"
+                      name="tradelineid" />
+                    <outputColumn
+                      refId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].Columns[programid]"
+                      dataType="wstr"
+                      externalMetadataColumnId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].ExternalColumns[programid]"
+                      length="50"
+                      lineageId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].Columns[programid]"
+                      name="programid" />
+                    <outputColumn
+                      refId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].Columns[creditor_accepted_ratio]"
+                      dataType="r8"
+                      externalMetadataColumnId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].ExternalColumns[creditor_accepted_ratio]"
+                      lineageId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].Columns[creditor_accepted_ratio]"
+                      name="creditor_accepted_ratio" />
+                    <outputColumn
+                      refId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].Columns[creditor]"
+                      dataType="wstr"
+                      externalMetadataColumnId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].ExternalColumns[creditor]"
+                      length="100"
+                      lineageId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].Columns[creditor]"
+                      name="creditor" />
+                    <outputColumn
+                      refId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].Columns[eligibility]"
+                      dataType="wstr"
+                      externalMetadataColumnId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].ExternalColumns[eligibility]"
+                      length="25"
+                      lineageId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].Columns[eligibility]"
+                      name="eligibility" />
+                    <outputColumn
+                      refId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].Columns[creditor_score]"
+                      dataType="r8"
+                      externalMetadataColumnId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].ExternalColumns[creditor_score]"
+                      lineageId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].Columns[creditor_score]"
+                      name="creditor_score" />
+                    <outputColumn
+                      refId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].Columns[state_of_residency]"
+                      dataType="wstr"
+                      externalMetadataColumnId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].ExternalColumns[state_of_residency]"
+                      length="2"
+                      lineageId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].Columns[state_of_residency]"
+                      name="state_of_residency" />
+                    <outputColumn
+                      refId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].Columns[avg_monthly_payment]"
+                      dataType="i4"
+                      externalMetadataColumnId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].ExternalColumns[avg_monthly_payment]"
+                      lineageId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].Columns[avg_monthly_payment]"
+                      name="avg_monthly_payment" />
+                    <outputColumn
+                      refId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].Columns[account_delinquency]"
+                      dataType="i4"
+                      externalMetadataColumnId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].ExternalColumns[account_delinquency]"
+                      lineageId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].Columns[account_delinquency]"
+                      name="account_delinquency" />
+                    <outputColumn
+                      refId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].Columns[pct_avg_settlement]"
+                      dataType="i4"
+                      externalMetadataColumnId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].ExternalColumns[pct_avg_settlement]"
+                      lineageId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].Columns[pct_avg_settlement]"
+                      name="pct_avg_settlement" />
+                    <outputColumn
+                      refId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].Columns[fee_funding_pct]"
+                      dataType="r8"
+                      externalMetadataColumnId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].ExternalColumns[fee_funding_pct]"
+                      lineageId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].Columns[fee_funding_pct]"
+                      name="fee_funding_pct" />
+                    <outputColumn
+                      refId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].Columns[fee]"
+                      dataType="r8"
+                      externalMetadataColumnId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].ExternalColumns[fee]"
+                      lineageId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].Columns[fee]"
+                      name="fee" />
+                    <outputColumn
+                      refId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].Columns[account_status]"
+                      dataType="wstr"
+                      externalMetadataColumnId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].ExternalColumns[account_status]"
+                      length="100"
+                      lineageId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].Columns[account_status]"
+                      name="account_status" />
+                    <outputColumn
+                      refId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].Columns[enrolled_debt]"
+                      dataType="r8"
+                      externalMetadataColumnId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].ExternalColumns[enrolled_debt]"
+                      lineageId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].Columns[enrolled_debt]"
+                      name="enrolled_debt" />
+                    <outputColumn
+                      refId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].Columns[totalscore]"
+                      dataType="i4"
+                      externalMetadataColumnId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].ExternalColumns[totalscore]"
+                      lineageId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].Columns[totalscore]"
+                      name="totalscore" />
+                    <outputColumn
+                      refId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].Columns[rank]"
+                      dataType="i4"
+                      externalMetadataColumnId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].ExternalColumns[rank]"
+                      lineageId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].Columns[rank]"
+                      name="rank" />
+                    <outputColumn
+                      refId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].Columns[accountrepeatcountbyindex]"
+                      dataType="i4"
+                      externalMetadataColumnId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].ExternalColumns[accountrepeatcountbyindex]"
+                      lineageId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].Columns[accountrepeatcountbyindex]"
+                      name="accountrepeatcountbyindex" />
+                    <outputColumn
+                      refId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].Columns[calculatedcreditscore]"
+                      dataType="nText"
+                      externalMetadataColumnId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].ExternalColumns[calculatedcreditscore]"
+                      lineageId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].Columns[calculatedcreditscore]"
+                      name="calculatedcreditscore" />
+                    <outputColumn
+                      refId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].Columns[concatenatedindex]"
+                      dataType="r4"
+                      externalMetadataColumnId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].ExternalColumns[concatenatedindex]"
+                      lineageId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].Columns[concatenatedindex]"
+                      name="concatenatedindex" />
+                    <outputColumn
+                      refId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].Columns[createdat]"
+                      dataType="dbTimeStamp"
+                      externalMetadataColumnId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].ExternalColumns[createdat]"
+                      lineageId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].Columns[createdat]"
+                      name="createdat" />
+                    <outputColumn
+                      refId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].Columns[updatedat]"
+                      dataType="dbTimeStamp"
+                      externalMetadataColumnId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].ExternalColumns[updatedat]"
+                      lineageId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].Columns[updatedat]"
+                      name="updatedat" />
+                    <outputColumn
+                      refId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].Columns[balance]"
+                      dataType="r8"
+                      externalMetadataColumnId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].ExternalColumns[balance]"
+                      lineageId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].Columns[balance]"
+                      name="balance" />
+                    <outputColumn
+                      refId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].Columns[creditor_terms]"
+                      dataType="wstr"
+                      externalMetadataColumnId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].ExternalColumns[creditor_terms]"
+                      length="96"
+                      lineageId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].Columns[creditor_terms]"
+                      name="creditor_terms" />
+                    <outputColumn
+                      refId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].Columns[endofcurrentmonthfundaccumulation]"
+                      dataType="r8"
+                      externalMetadataColumnId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].ExternalColumns[endofcurrentmonthfundaccumulation]"
+                      lineageId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].Columns[endofcurrentmonthfundaccumulation]"
+                      name="endofcurrentmonthfundaccumulation" />
+                    <outputColumn
+                      refId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].Columns[lastworkedon]"
+                      dataType="dbTimeStamp"
+                      externalMetadataColumnId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].ExternalColumns[lastworkedon]"
+                      lineageId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].Columns[lastworkedon]"
+                      name="lastworkedon" />
+                    <outputColumn
+                      refId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].Columns[sf_tl_id]"
+                      dataType="nText"
+                      externalMetadataColumnId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].ExternalColumns[sf_tl_id]"
+                      lineageId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].Columns[sf_tl_id]"
+                      name="sf_tl_id" />
+                    <outputColumn
+                      refId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].Columns[cft_funds]"
+                      dataType="r4"
+                      externalMetadataColumnId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].ExternalColumns[cft_funds]"
+                      lineageId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].Columns[cft_funds]"
+                      name="cft_funds" />
+                    <outputColumn
+                      refId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].Columns[pct_funds_available]"
+                      dataType="r4"
+                      externalMetadataColumnId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].ExternalColumns[pct_funds_available]"
+                      lineageId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].Columns[pct_funds_available]"
+                      name="pct_funds_available" />
+                    <outputColumn
+                      refId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].Columns[prospect_uuid]"
+                      dataType="wstr"
+                      externalMetadataColumnId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].ExternalColumns[prospect_uuid]"
+                      length="255"
+                      lineageId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].Columns[prospect_uuid]"
+                      name="prospect_uuid" />
+                    <outputColumn
+                      refId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].Columns[firm_name]"
+                      dataType="wstr"
+                      externalMetadataColumnId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].ExternalColumns[firm_name]"
+                      length="6"
+                      lineageId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].Columns[firm_name]"
+                      name="firm_name" />
+                    <outputColumn
+                      refId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].Columns[full_name]"
+                      dataType="nText"
+                      externalMetadataColumnId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].ExternalColumns[full_name]"
+                      lineageId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].Columns[full_name]"
+                      name="full_name" />
+                    <outputColumn
+                      refId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].Columns[draft_amount]"
+                      dataType="i4"
+                      externalMetadataColumnId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].ExternalColumns[draft_amount]"
+                      lineageId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].Columns[draft_amount]"
+                      name="draft_amount" />
+                    <outputColumn
+                      refId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].Columns[enrolled_dt]"
+                      dataType="dbTimeStamp"
+                      externalMetadataColumnId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].ExternalColumns[enrolled_dt]"
+                      lineageId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].Columns[enrolled_dt]"
+                      name="enrolled_dt" />
+                    <outputColumn
+                      refId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].Columns[previoussettlements]"
+                      dataType="i4"
+                      externalMetadataColumnId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].ExternalColumns[previoussettlements]"
+                      lineageId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].Columns[previoussettlements]"
+                      name="previoussettlements" />
+                  </outputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].ExternalColumns[client_account_id]"
+                      dataType="i8"
+                      name="client_account_id" />
+                    <externalMetadataColumn
+                      refId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].ExternalColumns[business_dt]"
+                      dataType="dbTimeStamp"
+                      name="business_dt" />
+                    <externalMetadataColumn
+                      refId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].ExternalColumns[tradeline_id]"
+                      dataType="i4"
+                      name="tradeline_id" />
+                    <externalMetadataColumn
+                      refId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].ExternalColumns[tradelineid]"
+                      dataType="wstr"
+                      length="50"
+                      name="tradelineid" />
+                    <externalMetadataColumn
+                      refId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].ExternalColumns[programid]"
+                      dataType="wstr"
+                      length="50"
+                      name="programid" />
+                    <externalMetadataColumn
+                      refId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].ExternalColumns[creditor_accepted_ratio]"
+                      dataType="r8"
+                      name="creditor_accepted_ratio" />
+                    <externalMetadataColumn
+                      refId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].ExternalColumns[creditor]"
+                      dataType="wstr"
+                      length="100"
+                      name="creditor" />
+                    <externalMetadataColumn
+                      refId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].ExternalColumns[eligibility]"
+                      dataType="wstr"
+                      length="25"
+                      name="eligibility" />
+                    <externalMetadataColumn
+                      refId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].ExternalColumns[creditor_score]"
+                      dataType="r8"
+                      name="creditor_score" />
+                    <externalMetadataColumn
+                      refId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].ExternalColumns[state_of_residency]"
+                      dataType="wstr"
+                      length="2"
+                      name="state_of_residency" />
+                    <externalMetadataColumn
+                      refId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].ExternalColumns[avg_monthly_payment]"
+                      dataType="i4"
+                      name="avg_monthly_payment" />
+                    <externalMetadataColumn
+                      refId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].ExternalColumns[account_delinquency]"
+                      dataType="i4"
+                      name="account_delinquency" />
+                    <externalMetadataColumn
+                      refId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].ExternalColumns[pct_avg_settlement]"
+                      dataType="i4"
+                      name="pct_avg_settlement" />
+                    <externalMetadataColumn
+                      refId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].ExternalColumns[fee_funding_pct]"
+                      dataType="r8"
+                      name="fee_funding_pct" />
+                    <externalMetadataColumn
+                      refId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].ExternalColumns[fee]"
+                      dataType="r8"
+                      name="fee" />
+                    <externalMetadataColumn
+                      refId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].ExternalColumns[account_status]"
+                      dataType="wstr"
+                      length="100"
+                      name="account_status" />
+                    <externalMetadataColumn
+                      refId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].ExternalColumns[enrolled_debt]"
+                      dataType="r8"
+                      name="enrolled_debt" />
+                    <externalMetadataColumn
+                      refId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].ExternalColumns[totalscore]"
+                      dataType="i4"
+                      name="totalscore" />
+                    <externalMetadataColumn
+                      refId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].ExternalColumns[rank]"
+                      dataType="i4"
+                      name="rank" />
+                    <externalMetadataColumn
+                      refId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].ExternalColumns[accountrepeatcountbyindex]"
+                      dataType="i4"
+                      name="accountrepeatcountbyindex" />
+                    <externalMetadataColumn
+                      refId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].ExternalColumns[calculatedcreditscore]"
+                      dataType="nText"
+                      name="calculatedcreditscore" />
+                    <externalMetadataColumn
+                      refId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].ExternalColumns[concatenatedindex]"
+                      dataType="r4"
+                      name="concatenatedindex" />
+                    <externalMetadataColumn
+                      refId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].ExternalColumns[createdat]"
+                      dataType="dbTimeStamp"
+                      name="createdat" />
+                    <externalMetadataColumn
+                      refId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].ExternalColumns[updatedat]"
+                      dataType="dbTimeStamp"
+                      name="updatedat" />
+                    <externalMetadataColumn
+                      refId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].ExternalColumns[balance]"
+                      dataType="r8"
+                      name="balance" />
+                    <externalMetadataColumn
+                      refId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].ExternalColumns[creditor_terms]"
+                      dataType="wstr"
+                      length="96"
+                      name="creditor_terms" />
+                    <externalMetadataColumn
+                      refId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].ExternalColumns[endofcurrentmonthfundaccumulation]"
+                      dataType="r8"
+                      name="endofcurrentmonthfundaccumulation" />
+                    <externalMetadataColumn
+                      refId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].ExternalColumns[lastworkedon]"
+                      dataType="dbTimeStamp"
+                      name="lastworkedon" />
+                    <externalMetadataColumn
+                      refId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].ExternalColumns[sf_tl_id]"
+                      dataType="nText"
+                      name="sf_tl_id" />
+                    <externalMetadataColumn
+                      refId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].ExternalColumns[cft_funds]"
+                      dataType="r4"
+                      name="cft_funds" />
+                    <externalMetadataColumn
+                      refId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].ExternalColumns[pct_funds_available]"
+                      dataType="r4"
+                      name="pct_funds_available" />
+                    <externalMetadataColumn
+                      refId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].ExternalColumns[prospect_uuid]"
+                      dataType="wstr"
+                      length="255"
+                      name="prospect_uuid" />
+                    <externalMetadataColumn
+                      refId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].ExternalColumns[firm_name]"
+                      dataType="wstr"
+                      length="6"
+                      name="firm_name" />
+                    <externalMetadataColumn
+                      refId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].ExternalColumns[full_name]"
+                      dataType="nText"
+                      name="full_name" />
+                    <externalMetadataColumn
+                      refId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].ExternalColumns[draft_amount]"
+                      dataType="i4"
+                      name="draft_amount" />
+                    <externalMetadataColumn
+                      refId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].ExternalColumns[enrolled_dt]"
+                      dataType="dbTimeStamp"
+                      name="enrolled_dt" />
+                    <externalMetadataColumn
+                      refId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].ExternalColumns[previoussettlements]"
+                      dataType="i4"
+                      name="previoussettlements" />
+                  </externalMetadataColumns>
+                </output>
+                <output
+                  refId="Package\Scorecard\Scorecard.Outputs[ODBC Source Error Output]"
+                  isErrorOut="true"
+                  name="ODBC Source Error Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Scorecard\Scorecard.Outputs[ODBC Source Error Output].Columns[client_account_id]"
+                      dataType="i8"
+                      externalMetadataColumnId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].ExternalColumns[client_account_id]"
+                      lineageId="Package\Scorecard\Scorecard.Outputs[ODBC Source Error Output].Columns[client_account_id]"
+                      name="client_account_id" />
+                    <outputColumn
+                      refId="Package\Scorecard\Scorecard.Outputs[ODBC Source Error Output].Columns[business_dt]"
+                      dataType="dbTimeStamp"
+                      externalMetadataColumnId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].ExternalColumns[business_dt]"
+                      lineageId="Package\Scorecard\Scorecard.Outputs[ODBC Source Error Output].Columns[business_dt]"
+                      name="business_dt" />
+                    <outputColumn
+                      refId="Package\Scorecard\Scorecard.Outputs[ODBC Source Error Output].Columns[tradeline_id]"
+                      dataType="i4"
+                      externalMetadataColumnId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].ExternalColumns[tradeline_id]"
+                      lineageId="Package\Scorecard\Scorecard.Outputs[ODBC Source Error Output].Columns[tradeline_id]"
+                      name="tradeline_id" />
+                    <outputColumn
+                      refId="Package\Scorecard\Scorecard.Outputs[ODBC Source Error Output].Columns[tradelineid]"
+                      dataType="wstr"
+                      externalMetadataColumnId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].ExternalColumns[tradelineid]"
+                      length="50"
+                      lineageId="Package\Scorecard\Scorecard.Outputs[ODBC Source Error Output].Columns[tradelineid]"
+                      name="tradelineid" />
+                    <outputColumn
+                      refId="Package\Scorecard\Scorecard.Outputs[ODBC Source Error Output].Columns[programid]"
+                      dataType="wstr"
+                      externalMetadataColumnId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].ExternalColumns[programid]"
+                      length="50"
+                      lineageId="Package\Scorecard\Scorecard.Outputs[ODBC Source Error Output].Columns[programid]"
+                      name="programid" />
+                    <outputColumn
+                      refId="Package\Scorecard\Scorecard.Outputs[ODBC Source Error Output].Columns[creditor_accepted_ratio]"
+                      dataType="r8"
+                      externalMetadataColumnId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].ExternalColumns[creditor_accepted_ratio]"
+                      lineageId="Package\Scorecard\Scorecard.Outputs[ODBC Source Error Output].Columns[creditor_accepted_ratio]"
+                      name="creditor_accepted_ratio" />
+                    <outputColumn
+                      refId="Package\Scorecard\Scorecard.Outputs[ODBC Source Error Output].Columns[creditor]"
+                      dataType="wstr"
+                      externalMetadataColumnId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].ExternalColumns[creditor]"
+                      length="100"
+                      lineageId="Package\Scorecard\Scorecard.Outputs[ODBC Source Error Output].Columns[creditor]"
+                      name="creditor" />
+                    <outputColumn
+                      refId="Package\Scorecard\Scorecard.Outputs[ODBC Source Error Output].Columns[eligibility]"
+                      dataType="wstr"
+                      externalMetadataColumnId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].ExternalColumns[eligibility]"
+                      length="25"
+                      lineageId="Package\Scorecard\Scorecard.Outputs[ODBC Source Error Output].Columns[eligibility]"
+                      name="eligibility" />
+                    <outputColumn
+                      refId="Package\Scorecard\Scorecard.Outputs[ODBC Source Error Output].Columns[creditor_score]"
+                      dataType="r8"
+                      externalMetadataColumnId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].ExternalColumns[creditor_score]"
+                      lineageId="Package\Scorecard\Scorecard.Outputs[ODBC Source Error Output].Columns[creditor_score]"
+                      name="creditor_score" />
+                    <outputColumn
+                      refId="Package\Scorecard\Scorecard.Outputs[ODBC Source Error Output].Columns[state_of_residency]"
+                      dataType="wstr"
+                      externalMetadataColumnId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].ExternalColumns[state_of_residency]"
+                      length="2"
+                      lineageId="Package\Scorecard\Scorecard.Outputs[ODBC Source Error Output].Columns[state_of_residency]"
+                      name="state_of_residency" />
+                    <outputColumn
+                      refId="Package\Scorecard\Scorecard.Outputs[ODBC Source Error Output].Columns[avg_monthly_payment]"
+                      dataType="i4"
+                      externalMetadataColumnId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].ExternalColumns[avg_monthly_payment]"
+                      lineageId="Package\Scorecard\Scorecard.Outputs[ODBC Source Error Output].Columns[avg_monthly_payment]"
+                      name="avg_monthly_payment" />
+                    <outputColumn
+                      refId="Package\Scorecard\Scorecard.Outputs[ODBC Source Error Output].Columns[account_delinquency]"
+                      dataType="i4"
+                      externalMetadataColumnId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].ExternalColumns[account_delinquency]"
+                      lineageId="Package\Scorecard\Scorecard.Outputs[ODBC Source Error Output].Columns[account_delinquency]"
+                      name="account_delinquency" />
+                    <outputColumn
+                      refId="Package\Scorecard\Scorecard.Outputs[ODBC Source Error Output].Columns[pct_avg_settlement]"
+                      dataType="i4"
+                      externalMetadataColumnId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].ExternalColumns[pct_avg_settlement]"
+                      lineageId="Package\Scorecard\Scorecard.Outputs[ODBC Source Error Output].Columns[pct_avg_settlement]"
+                      name="pct_avg_settlement" />
+                    <outputColumn
+                      refId="Package\Scorecard\Scorecard.Outputs[ODBC Source Error Output].Columns[fee_funding_pct]"
+                      dataType="r8"
+                      externalMetadataColumnId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].ExternalColumns[fee_funding_pct]"
+                      lineageId="Package\Scorecard\Scorecard.Outputs[ODBC Source Error Output].Columns[fee_funding_pct]"
+                      name="fee_funding_pct" />
+                    <outputColumn
+                      refId="Package\Scorecard\Scorecard.Outputs[ODBC Source Error Output].Columns[fee]"
+                      dataType="r8"
+                      externalMetadataColumnId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].ExternalColumns[fee]"
+                      lineageId="Package\Scorecard\Scorecard.Outputs[ODBC Source Error Output].Columns[fee]"
+                      name="fee" />
+                    <outputColumn
+                      refId="Package\Scorecard\Scorecard.Outputs[ODBC Source Error Output].Columns[account_status]"
+                      dataType="wstr"
+                      externalMetadataColumnId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].ExternalColumns[account_status]"
+                      length="100"
+                      lineageId="Package\Scorecard\Scorecard.Outputs[ODBC Source Error Output].Columns[account_status]"
+                      name="account_status" />
+                    <outputColumn
+                      refId="Package\Scorecard\Scorecard.Outputs[ODBC Source Error Output].Columns[enrolled_debt]"
+                      dataType="r8"
+                      externalMetadataColumnId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].ExternalColumns[enrolled_debt]"
+                      lineageId="Package\Scorecard\Scorecard.Outputs[ODBC Source Error Output].Columns[enrolled_debt]"
+                      name="enrolled_debt" />
+                    <outputColumn
+                      refId="Package\Scorecard\Scorecard.Outputs[ODBC Source Error Output].Columns[totalscore]"
+                      dataType="i4"
+                      externalMetadataColumnId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].ExternalColumns[totalscore]"
+                      lineageId="Package\Scorecard\Scorecard.Outputs[ODBC Source Error Output].Columns[totalscore]"
+                      name="totalscore" />
+                    <outputColumn
+                      refId="Package\Scorecard\Scorecard.Outputs[ODBC Source Error Output].Columns[rank]"
+                      dataType="i4"
+                      externalMetadataColumnId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].ExternalColumns[rank]"
+                      lineageId="Package\Scorecard\Scorecard.Outputs[ODBC Source Error Output].Columns[rank]"
+                      name="rank" />
+                    <outputColumn
+                      refId="Package\Scorecard\Scorecard.Outputs[ODBC Source Error Output].Columns[accountrepeatcountbyindex]"
+                      dataType="i4"
+                      externalMetadataColumnId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].ExternalColumns[accountrepeatcountbyindex]"
+                      lineageId="Package\Scorecard\Scorecard.Outputs[ODBC Source Error Output].Columns[accountrepeatcountbyindex]"
+                      name="accountrepeatcountbyindex" />
+                    <outputColumn
+                      refId="Package\Scorecard\Scorecard.Outputs[ODBC Source Error Output].Columns[calculatedcreditscore]"
+                      dataType="nText"
+                      externalMetadataColumnId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].ExternalColumns[calculatedcreditscore]"
+                      lineageId="Package\Scorecard\Scorecard.Outputs[ODBC Source Error Output].Columns[calculatedcreditscore]"
+                      name="calculatedcreditscore" />
+                    <outputColumn
+                      refId="Package\Scorecard\Scorecard.Outputs[ODBC Source Error Output].Columns[concatenatedindex]"
+                      dataType="r4"
+                      externalMetadataColumnId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].ExternalColumns[concatenatedindex]"
+                      lineageId="Package\Scorecard\Scorecard.Outputs[ODBC Source Error Output].Columns[concatenatedindex]"
+                      name="concatenatedindex" />
+                    <outputColumn
+                      refId="Package\Scorecard\Scorecard.Outputs[ODBC Source Error Output].Columns[createdat]"
+                      dataType="dbTimeStamp"
+                      externalMetadataColumnId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].ExternalColumns[createdat]"
+                      lineageId="Package\Scorecard\Scorecard.Outputs[ODBC Source Error Output].Columns[createdat]"
+                      name="createdat" />
+                    <outputColumn
+                      refId="Package\Scorecard\Scorecard.Outputs[ODBC Source Error Output].Columns[updatedat]"
+                      dataType="dbTimeStamp"
+                      externalMetadataColumnId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].ExternalColumns[updatedat]"
+                      lineageId="Package\Scorecard\Scorecard.Outputs[ODBC Source Error Output].Columns[updatedat]"
+                      name="updatedat" />
+                    <outputColumn
+                      refId="Package\Scorecard\Scorecard.Outputs[ODBC Source Error Output].Columns[balance]"
+                      dataType="r8"
+                      externalMetadataColumnId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].ExternalColumns[balance]"
+                      lineageId="Package\Scorecard\Scorecard.Outputs[ODBC Source Error Output].Columns[balance]"
+                      name="balance" />
+                    <outputColumn
+                      refId="Package\Scorecard\Scorecard.Outputs[ODBC Source Error Output].Columns[creditor_terms]"
+                      dataType="wstr"
+                      externalMetadataColumnId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].ExternalColumns[creditor_terms]"
+                      length="96"
+                      lineageId="Package\Scorecard\Scorecard.Outputs[ODBC Source Error Output].Columns[creditor_terms]"
+                      name="creditor_terms" />
+                    <outputColumn
+                      refId="Package\Scorecard\Scorecard.Outputs[ODBC Source Error Output].Columns[endofcurrentmonthfundaccumulation]"
+                      dataType="r8"
+                      externalMetadataColumnId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].ExternalColumns[endofcurrentmonthfundaccumulation]"
+                      lineageId="Package\Scorecard\Scorecard.Outputs[ODBC Source Error Output].Columns[endofcurrentmonthfundaccumulation]"
+                      name="endofcurrentmonthfundaccumulation" />
+                    <outputColumn
+                      refId="Package\Scorecard\Scorecard.Outputs[ODBC Source Error Output].Columns[lastworkedon]"
+                      dataType="dbTimeStamp"
+                      externalMetadataColumnId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].ExternalColumns[lastworkedon]"
+                      lineageId="Package\Scorecard\Scorecard.Outputs[ODBC Source Error Output].Columns[lastworkedon]"
+                      name="lastworkedon" />
+                    <outputColumn
+                      refId="Package\Scorecard\Scorecard.Outputs[ODBC Source Error Output].Columns[sf_tl_id]"
+                      dataType="nText"
+                      externalMetadataColumnId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].ExternalColumns[sf_tl_id]"
+                      lineageId="Package\Scorecard\Scorecard.Outputs[ODBC Source Error Output].Columns[sf_tl_id]"
+                      name="sf_tl_id" />
+                    <outputColumn
+                      refId="Package\Scorecard\Scorecard.Outputs[ODBC Source Error Output].Columns[cft_funds]"
+                      dataType="r4"
+                      externalMetadataColumnId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].ExternalColumns[cft_funds]"
+                      lineageId="Package\Scorecard\Scorecard.Outputs[ODBC Source Error Output].Columns[cft_funds]"
+                      name="cft_funds" />
+                    <outputColumn
+                      refId="Package\Scorecard\Scorecard.Outputs[ODBC Source Error Output].Columns[pct_funds_available]"
+                      dataType="r4"
+                      externalMetadataColumnId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].ExternalColumns[pct_funds_available]"
+                      lineageId="Package\Scorecard\Scorecard.Outputs[ODBC Source Error Output].Columns[pct_funds_available]"
+                      name="pct_funds_available" />
+                    <outputColumn
+                      refId="Package\Scorecard\Scorecard.Outputs[ODBC Source Error Output].Columns[prospect_uuid]"
+                      dataType="wstr"
+                      externalMetadataColumnId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].ExternalColumns[prospect_uuid]"
+                      length="255"
+                      lineageId="Package\Scorecard\Scorecard.Outputs[ODBC Source Error Output].Columns[prospect_uuid]"
+                      name="prospect_uuid" />
+                    <outputColumn
+                      refId="Package\Scorecard\Scorecard.Outputs[ODBC Source Error Output].Columns[firm_name]"
+                      dataType="wstr"
+                      externalMetadataColumnId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].ExternalColumns[firm_name]"
+                      length="6"
+                      lineageId="Package\Scorecard\Scorecard.Outputs[ODBC Source Error Output].Columns[firm_name]"
+                      name="firm_name" />
+                    <outputColumn
+                      refId="Package\Scorecard\Scorecard.Outputs[ODBC Source Error Output].Columns[full_name]"
+                      dataType="nText"
+                      externalMetadataColumnId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].ExternalColumns[full_name]"
+                      lineageId="Package\Scorecard\Scorecard.Outputs[ODBC Source Error Output].Columns[full_name]"
+                      name="full_name" />
+                    <outputColumn
+                      refId="Package\Scorecard\Scorecard.Outputs[ODBC Source Error Output].Columns[draft_amount]"
+                      dataType="i4"
+                      externalMetadataColumnId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].ExternalColumns[draft_amount]"
+                      lineageId="Package\Scorecard\Scorecard.Outputs[ODBC Source Error Output].Columns[draft_amount]"
+                      name="draft_amount" />
+                    <outputColumn
+                      refId="Package\Scorecard\Scorecard.Outputs[ODBC Source Error Output].Columns[enrolled_dt]"
+                      dataType="dbTimeStamp"
+                      externalMetadataColumnId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].ExternalColumns[enrolled_dt]"
+                      lineageId="Package\Scorecard\Scorecard.Outputs[ODBC Source Error Output].Columns[enrolled_dt]"
+                      name="enrolled_dt" />
+                    <outputColumn
+                      refId="Package\Scorecard\Scorecard.Outputs[ODBC Source Error Output].Columns[previoussettlements]"
+                      dataType="i4"
+                      externalMetadataColumnId="Package\Scorecard\Scorecard.Outputs[ODBC Source Output].ExternalColumns[previoussettlements]"
+                      lineageId="Package\Scorecard\Scorecard.Outputs[ODBC Source Error Output].Columns[previoussettlements]"
+                      name="previoussettlements" />
+                    <outputColumn
+                      refId="Package\Scorecard\Scorecard.Outputs[ODBC Source Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Scorecard\Scorecard.Outputs[ODBC Source Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Scorecard\Scorecard.Outputs[ODBC Source Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Scorecard\Scorecard.Outputs[ODBC Source Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+          </components>
+        </pipeline>
+      </DTS:ObjectData>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
+<!--If you manually edit this section and make a mistake, you can delete it. -->
+<!--The package will still be able to load normally but the previous layout information will be lost and the designer will automatically re-arrange the elements on the design surface.-->
+<Objects
+  Version="8">
+  <!--Each node below will contain properties that do not affect runtime behavior.-->
+  <Package
+    design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph">
+        <NodeLayout
+          Size="125,42"
+          Id="Package\Scorecard"
+          TopLeft="139,55" />
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+  <TaskHost
+    design-time-name="Package\Scorecard">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph">
+        <NodeLayout
+          Size="125,42"
+          Id="Package\Scorecard\Scorecard"
+          TopLeft="207,120" />
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\Scorecard\Scorecard">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+</Objects>]]></DTS:DesignTimeProperties>
+</DTS:Executable>
