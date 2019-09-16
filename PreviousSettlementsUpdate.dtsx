@@ -1,0 +1,1139 @@
+﻿<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="9/10/2019 9:15:33 PM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="EC2AMAZ-GQJ0QHR"
+  DTS:CreatorName="EC2AMAZ-GQJ0QHR\rstewart"
+  DTS:DTSID="{5CDB7A0D-9685-4B9F-BE18-DA0BBE3DCD03}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="15.0.1301.433"
+  DTS:LocaleID="1033"
+  DTS:ObjectName="PreviousSettlementsUpdate"
+  DTS:PackageType="5"
+  DTS:VersionBuild="8"
+  DTS:VersionGUID="{2C94ADF8-C0E1-42A8-A5F2-75738EE7B97D}">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:ConnectionManagers>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[PostgreSQL35W.tfSettlementsProd]"
+      DTS:CreationName="ODBC"
+      DTS:DTSID="{B03DCEB9-4D8A-464B-B54B-067F4DE0D319}"
+      DTS:ObjectName="PostgreSQL35W.tfSettlementsProd">
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="uid=tfSettlementsProd;Dsn=PostgreSQL35W;">
+          <DTS:Password
+            DTS:Name="pwd"
+            Sensitive="1"
+            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAwBOuxLnrgECzQK6HR+NDbwAAAAAIAAAARABUAFMAAAAQZgAAAAEAACAAAABo8xeDJTlG1bG771pyfZ9cUOG9Zi2N5pzqpcZv9GQmCgAAAAAOgAAAAAIAACAAAADfCY7Ujff+ORfCZD4f54/NsCUsl1EFtAuH3yhuUflk/yAAAACFwtIYiIGre+sJYQG5HUi/KuV8QRbTiasCxg6gTwzFmkAAAACcE5diGA1UIelRUZ/Bh2qcHwSmOmRDeEdzf/cTrRFPybv4V1HcNd39LIPpd7L7tuKCu8NtKi/7IfeBIBCOqbMI</DTS:Password>
+        </DTS:ConnectionManager>
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[PostgreSQL35W.tfSettlementsStaging]"
+      DTS:CreationName="ODBC"
+      DTS:DTSID="{25ee79ca-09fc-4f10-a46e-980746233454}"
+      DTS:ObjectName="PostgreSQL35W.tfSettlementsStaging">
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="uid=tfSettlementsStage;Dsn=SettlementsDev;">
+          <DTS:Password
+            DTS:Name="pwd"
+            Sensitive="1"
+            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAwBOuxLnrgECzQK6HR+NDbwAAAAAIAAAARABUAFMAAAAQZgAAAAEAACAAAAAnuWezWrjaWdk7CeVEeXpi4hTawuK3sf+Me2MJvUKECwAAAAAOgAAAAAIAACAAAAD7oxIjcn8O1u3L86jCjPRukCI6aZLDIC2F0LAXBGIl8CAAAACXko95Gj5cTnMYa6Bawykh6ogDhAPCpyqPkvu8G4XJaEAAAACh22rCioVVDv7sT9y0XkUV0V54+ljd3qqdyNplja2qzN9TQCv8YotsImJCwKbdXkHUEE8HhE/g6CbbyrjWG17x</DTS:Password>
+        </DTS:ConnectionManager>
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[RedshiftProd32.rstewart]"
+      DTS:CreationName="ODBC"
+      DTS:DTSID="{A3346D23-F830-45DE-9906-432F89633D14}"
+      DTS:ObjectName="RedshiftProd32.rstewart">
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="uid=rstewart;Dsn=RedshiftProd32;">
+          <DTS:Password
+            DTS:Name="pwd"
+            Sensitive="1"
+            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAwBOuxLnrgECzQK6HR+NDbwAAAAAIAAAARABUAFMAAAAQZgAAAAEAACAAAADs/7bQuow6eBOcmwCiuiRJGuNIdcZOgA3uenDR1WnCkQAAAAAOgAAAAAIAACAAAABmBU50SeObCnY1jMCm2xIfsAI/iOPwKoApal4A+TbRZSAAAACzZAH/Iv+WUCMhumTk5+Mkg84/HYqol61PykHmmTS2N0AAAAA1dEnT1UA9NZlFfgGF0yhvKnNN1PVAs0VU9Z70ihm5+/HBAEpLrdlm1p5tKaXuNERzWwvtS7onjfXZOvrTd9tb</DTS:Password>
+        </DTS:ConnectionManager>
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+  </DTS:ConnectionManagers>
+  <DTS:Variables />
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\Production"
+      DTS:CreationName="STOCK:SEQUENCE"
+      DTS:Description="Sequence Container"
+      DTS:DTSID="{C91DA237-072E-493F-BF8D-153C68A92CE4}"
+      DTS:ExecutableType="STOCK:SEQUENCE"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Production">
+      <DTS:Variables />
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package\Production\clear tmp table"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{3c0bf73d-9d3b-4118-a805-96ef1d3975d8}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="clear tmp table"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{B03DCEB9-4D8A-464B-B54B-067F4DE0D319}"
+              SQLTask:SqlStatementSource="truncate table tmp_previoussettlement" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\Production\Reload table with current data"
+          DTS:CreationName="Microsoft.Pipeline"
+          DTS:Description="Data Flow Task"
+          DTS:DTSID="{f36fd759-13d9-436d-99ff-bdbef3b2b8e6}"
+          DTS:ExecutableType="Microsoft.Pipeline"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Reload table with current data"
+          DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <pipeline
+              version="1">
+              <components>
+                <component
+                  refId="Package\Production\Reload table with current data\ODBC Destination"
+                  componentClassID="Attunity.SSISODBCDst"
+                  description="ODBC Destination"
+                  name="ODBC Destination"
+                  usesDispositions="true"
+                  version="7">
+                  <properties>
+                    <property
+                      dataType="System.String"
+                      description="The name of the table to be fetched."
+                      expressionType="Notify"
+                      name="TableName">"public"."tmp_previoussettlement"</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specify the number of rows fetched per batch."
+                      expressionType="Notify"
+                      name="BatchSize">1000</property>
+                    <property
+                      dataType="System.Int32"
+                      description="The number of rows inserted under the same transaction."
+                      expressionType="Notify"
+                      name="TransactionSize">1000</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Determines the chunk size allocation for LOB columns"
+                      expressionType="Notify"
+                      name="LobChunkSize">32768</property>
+                    <property
+                      dataType="System.Int32"
+                      description="The number of seconds to wait for an SQL statement to execute before returning to the application."
+                      expressionType="Notify"
+                      name="StatementTimeout">0</property>
+                    <property
+                      dataType="System.Int32"
+                      description="The code page to use when code page information is unavailable from the data source."
+                      expressionType="Notify"
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Int32"
+                      description="The method used for inserting data. Possible values are 'Batch' or 'Row by row'."
+                      expressionType="Notify"
+                      name="InsertMethod">0</property>
+                    <property
+                      dataType="System.Int32"
+                      description="The ODBC C data type for binding numeric data."
+                      expressionType="Notify"
+                      name="BindNumericAs">0</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Determines how the component would bind columns of (multi)-byte string types (i.e., SQL_CHAR, SQL_VARCHAR, SQL_LONGVARCHAR). The options are: Unicode (SQL_C_WCHAR) and ANSI (SQL_C_CHAR)."
+                      expressionType="Notify"
+                      name="BindCharColumnsAs">0</property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\Production\Reload table with current data\ODBC Destination.Connections[ODBCConnection]"
+                      connectionManagerID="Package.ConnectionManagers[PostgreSQL35W.tfSettlementsProd]"
+                      connectionManagerRefId="Package.ConnectionManagers[PostgreSQL35W.tfSettlementsProd]"
+                      description="The ODBC runtime connection used to access the database."
+                      name="ODBCConnection" />
+                  </connections>
+                  <inputs>
+                    <input
+                      refId="Package\Production\Reload table with current data\ODBC Destination.Inputs[ODBC Destination Input]"
+                      errorOrTruncationOperation="Insert"
+                      errorRowDisposition="FailComponent"
+                      hasSideEffects="true"
+                      name="ODBC Destination Input"
+                      truncationRowDisposition="FailComponent">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\Production\Reload table with current data\ODBC Destination.Inputs[ODBC Destination Input].Columns[tl_name]"
+                          cachedDataType="nText"
+                          cachedName="tl_name"
+                          externalMetadataColumnId="Package\Production\Reload table with current data\ODBC Destination.Inputs[ODBC Destination Input].ExternalColumns[tl_name]"
+                          lineageId="Package\Production\Reload table with current data\ODBC Source.Outputs[ODBC Source Output].Columns[tl_name]" />
+                        <inputColumn
+                          refId="Package\Production\Reload table with current data\ODBC Destination.Inputs[ODBC Destination Input].Columns[hassettlements]"
+                          cachedDataType="i4"
+                          cachedName="hassettlements"
+                          externalMetadataColumnId="Package\Production\Reload table with current data\ODBC Destination.Inputs[ODBC Destination Input].ExternalColumns[hassettlements]"
+                          lineageId="Package\Production\Reload table with current data\ODBC Source.Outputs[ODBC Source Output].Columns[hassettlements]" />
+                      </inputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\Production\Reload table with current data\ODBC Destination.Inputs[ODBC Destination Input].ExternalColumns[tl_name]"
+                          dataType="wstr"
+                          length="20"
+                          name="tl_name" />
+                        <externalMetadataColumn
+                          refId="Package\Production\Reload table with current data\ODBC Destination.Inputs[ODBC Destination Input].ExternalColumns[hassettlements]"
+                          dataType="i4"
+                          name="hassettlements" />
+                      </externalMetadataColumns>
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\Production\Reload table with current data\ODBC Destination.Outputs[ODBC Destination Error Output]"
+                      isErrorOut="true"
+                      name="ODBC Destination Error Output">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\Production\Reload table with current data\ODBC Destination.Outputs[ODBC Destination Error Output].Columns[tl_name]"
+                          dataType="wstr"
+                          externalMetadataColumnId="Package\Production\Reload table with current data\ODBC Destination.Inputs[ODBC Destination Input].ExternalColumns[tl_name]"
+                          length="20"
+                          lineageId="Package\Production\Reload table with current data\ODBC Destination.Outputs[ODBC Destination Error Output].Columns[tl_name]"
+                          name="tl_name" />
+                        <outputColumn
+                          refId="Package\Production\Reload table with current data\ODBC Destination.Outputs[ODBC Destination Error Output].Columns[hassettlements]"
+                          dataType="i4"
+                          externalMetadataColumnId="Package\Production\Reload table with current data\ODBC Destination.Inputs[ODBC Destination Input].ExternalColumns[hassettlements]"
+                          lineageId="Package\Production\Reload table with current data\ODBC Destination.Outputs[ODBC Destination Error Output].Columns[hassettlements]"
+                          name="hassettlements" />
+                        <outputColumn
+                          refId="Package\Production\Reload table with current data\ODBC Destination.Outputs[ODBC Destination Error Output].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\Production\Reload table with current data\ODBC Destination.Outputs[ODBC Destination Error Output].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\Production\Reload table with current data\ODBC Destination.Outputs[ODBC Destination Error Output].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\Production\Reload table with current data\ODBC Destination.Outputs[ODBC Destination Error Output].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\Production\Reload table with current data\ODBC Source"
+                  componentClassID="Attunity.SSISODBCSrc"
+                  description="ODBC Source"
+                  name="ODBC Source"
+                  usesDispositions="true"
+                  version="7">
+                  <properties>
+                    <property
+                      dataType="System.String"
+                      description="The name of the table to be fetched."
+                      expressionType="Notify"
+                      name="TableName"></property>
+                    <property
+                      dataType="System.String"
+                      description="The SQL command to be executed."
+                      expressionType="Notify"
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=15.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">SELECT
+TL_Name
+, CASE when sum(IsSettling) &gt; 0 then 1 else 0 end as HasSettlements
+FROM (
+         select p.name as TL_Name
+              , case when t.nu_dse__current_stage__c != 'New' then 1 else 0 end as IsSettling
+
+         from datalake_sf.sf_nu_dse_tradeline_c_src t
+    inner join datalake_sf.sf_nu_dse_program_c_src p on t.nu_dse__program__c = p.id
+     ) dtData
+group by TL_Name</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specify the number of rows fetched per batch."
+                      expressionType="Notify"
+                      name="BatchSize">1000</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Determines the chunk size allocation for LOB columns"
+                      expressionType="Notify"
+                      name="LobChunkSize">32768</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Determines how the component exposes CHAR columns. If False, CHAR columns are exposed as (multi-)byte strings (DT_STR), if True, CHAR columns are exposed as wide strings (DT_WSTR)"
+                      expressionType="Notify"
+                      name="ExposeCharColumnsAsUnicode">false</property>
+                    <property
+                      dataType="System.Int32"
+                      description="The number of seconds to wait for an SQL statement to execute before returning to the application."
+                      expressionType="Notify"
+                      name="StatementTimeout">0</property>
+                    <property
+                      dataType="System.Int32"
+                      description="The code page to use when code page information is unavailable from the data source."
+                      expressionType="Notify"
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Int32"
+                      description="The method used for fetching data."
+                      expressionType="Notify"
+                      name="FetchMethod">1</property>
+                    <property
+                      dataType="System.Int32"
+                      description="The ODBC C data type for binding numeric data."
+                      expressionType="Notify"
+                      name="BindNumericAs">0</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Determines how the component would bind columns of (multi)-byte string types (i.e., SQL_CHAR, SQL_VARCHAR, SQL_LONGVARCHAR). The options are: Unicode (SQL_C_WCHAR) and ANSI (SQL_C_CHAR)."
+                      expressionType="Notify"
+                      name="BindCharColumnsAs">0</property>
+                    <property
+                      dataType="System.Int32"
+                      description="The mode used to access the database."
+                      expressionType="Notify"
+                      name="AccessMode"
+                      typeConverter="AccessMode">1</property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\Production\Reload table with current data\ODBC Source.Connections[ODBCConnection]"
+                      connectionManagerID="Package.ConnectionManagers[RedshiftProd32.rstewart]"
+                      connectionManagerRefId="Package.ConnectionManagers[RedshiftProd32.rstewart]"
+                      description="The ODBC runtime connection used to access the database."
+                      name="ODBCConnection" />
+                  </connections>
+                  <outputs>
+                    <output
+                      refId="Package\Production\Reload table with current data\ODBC Source.Outputs[ODBC Source Output]"
+                      errorRowDisposition="FailComponent"
+                      name="ODBC Source Output"
+                      truncationRowDisposition="FailComponent">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\Production\Reload table with current data\ODBC Source.Outputs[ODBC Source Output].Columns[tl_name]"
+                          dataType="nText"
+                          externalMetadataColumnId="Package\Production\Reload table with current data\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[tl_name]"
+                          lineageId="Package\Production\Reload table with current data\ODBC Source.Outputs[ODBC Source Output].Columns[tl_name]"
+                          name="tl_name" />
+                        <outputColumn
+                          refId="Package\Production\Reload table with current data\ODBC Source.Outputs[ODBC Source Output].Columns[hassettlements]"
+                          dataType="i4"
+                          externalMetadataColumnId="Package\Production\Reload table with current data\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[hassettlements]"
+                          lineageId="Package\Production\Reload table with current data\ODBC Source.Outputs[ODBC Source Output].Columns[hassettlements]"
+                          name="hassettlements" />
+                      </outputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\Production\Reload table with current data\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[tl_name]"
+                          dataType="nText"
+                          name="tl_name" />
+                        <externalMetadataColumn
+                          refId="Package\Production\Reload table with current data\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[hassettlements]"
+                          dataType="i4"
+                          name="hassettlements" />
+                      </externalMetadataColumns>
+                    </output>
+                    <output
+                      refId="Package\Production\Reload table with current data\ODBC Source.Outputs[ODBC Source Error Output]"
+                      isErrorOut="true"
+                      name="ODBC Source Error Output">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\Production\Reload table with current data\ODBC Source.Outputs[ODBC Source Error Output].Columns[tl_name]"
+                          dataType="nText"
+                          externalMetadataColumnId="Package\Production\Reload table with current data\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[tl_name]"
+                          lineageId="Package\Production\Reload table with current data\ODBC Source.Outputs[ODBC Source Error Output].Columns[tl_name]"
+                          name="tl_name" />
+                        <outputColumn
+                          refId="Package\Production\Reload table with current data\ODBC Source.Outputs[ODBC Source Error Output].Columns[hassettlements]"
+                          dataType="i4"
+                          externalMetadataColumnId="Package\Production\Reload table with current data\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[hassettlements]"
+                          lineageId="Package\Production\Reload table with current data\ODBC Source.Outputs[ODBC Source Error Output].Columns[hassettlements]"
+                          name="hassettlements" />
+                        <outputColumn
+                          refId="Package\Production\Reload table with current data\ODBC Source.Outputs[ODBC Source Error Output].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\Production\Reload table with current data\ODBC Source.Outputs[ODBC Source Error Output].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\Production\Reload table with current data\ODBC Source.Outputs[ODBC Source Error Output].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\Production\Reload table with current data\ODBC Source.Outputs[ODBC Source Error Output].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+              </components>
+              <paths>
+                <path
+                  refId="Package\Production\Reload table with current data.Paths[ODBC Source Output]"
+                  endId="Package\Production\Reload table with current data\ODBC Destination.Inputs[ODBC Destination Input]"
+                  name="ODBC Source Output"
+                  startId="Package\Production\Reload table with current data\ODBC Source.Outputs[ODBC Source Output]" />
+              </paths>
+            </pipeline>
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\Production\Update Scorecard"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{faa151db-8a3a-4cc2-96fd-0a063fa5deae}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Update Scorecard"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{B03DCEB9-4D8A-464B-B54B-067F4DE0D319}"
+              SQLTask:SqlStatementSource="UPDATE &quot;Scorecard&quot;&#xA;&#xA;    set &quot;previousSettlements&quot; = hassettlements&#xA;FROM tmp_previoussettlement&#xA; where  &quot;Scorecard&quot;.programname =   tl_name" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+      <DTS:PrecedenceConstraints>
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\Production.PrecedenceConstraints[Constraint]"
+          DTS:CreationName=""
+          DTS:DTSID="{eb381848-2fa5-4f14-b83b-5130c662ab8f}"
+          DTS:From="Package\Production\clear tmp table"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint"
+          DTS:To="Package\Production\Reload table with current data" />
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\Production.PrecedenceConstraints[Constraint 1]"
+          DTS:CreationName=""
+          DTS:DTSID="{ade91f46-ed63-4f51-aa54-44ed5339e44e}"
+          DTS:From="Package\Production\Reload table with current data"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint 1"
+          DTS:To="Package\Production\Update Scorecard" />
+      </DTS:PrecedenceConstraints>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Staging"
+      DTS:CreationName="STOCK:SEQUENCE"
+      DTS:Description="Sequence Container"
+      DTS:Disabled="True"
+      DTS:DTSID="{D9E86A42-2BA9-448E-83BE-C3CB37E2C42B}"
+      DTS:ExecutableType="STOCK:SEQUENCE"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Staging">
+      <DTS:Variables />
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package\Staging\clear tmp table"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{A5BE2724-72CA-4FDA-B285-6016371B6518}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="clear tmp table"
+          DTS:ThreadHint="1">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{25ee79ca-09fc-4f10-a46e-980746233454}"
+              SQLTask:SqlStatementSource="truncate table tmp_previoussettlement" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\Staging\Reload table with current data"
+          DTS:CreationName="Microsoft.Pipeline"
+          DTS:Description="Data Flow Task"
+          DTS:DTSID="{985007FA-DFBD-40E9-A708-F38FD7FFCD9D}"
+          DTS:ExecutableType="Microsoft.Pipeline"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Reload table with current data"
+          DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <pipeline
+              version="1">
+              <components>
+                <component
+                  refId="Package\Staging\Reload table with current data\ODBC Destination"
+                  componentClassID="Attunity.SSISODBCDst"
+                  description="ODBC Destination"
+                  name="ODBC Destination"
+                  usesDispositions="true"
+                  version="7">
+                  <properties>
+                    <property
+                      dataType="System.String"
+                      description="The name of the table to be fetched."
+                      expressionType="Notify"
+                      name="TableName">"public"."tmp_previoussettlement"</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specify the number of rows fetched per batch."
+                      expressionType="Notify"
+                      name="BatchSize">1000</property>
+                    <property
+                      dataType="System.Int32"
+                      description="The number of rows inserted under the same transaction."
+                      expressionType="Notify"
+                      name="TransactionSize">1000</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Determines the chunk size allocation for LOB columns"
+                      expressionType="Notify"
+                      name="LobChunkSize">32768</property>
+                    <property
+                      dataType="System.Int32"
+                      description="The number of seconds to wait for an SQL statement to execute before returning to the application."
+                      expressionType="Notify"
+                      name="StatementTimeout">0</property>
+                    <property
+                      dataType="System.Int32"
+                      description="The code page to use when code page information is unavailable from the data source."
+                      expressionType="Notify"
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Int32"
+                      description="The method used for inserting data. Possible values are 'Batch' or 'Row by row'."
+                      expressionType="Notify"
+                      name="InsertMethod">0</property>
+                    <property
+                      dataType="System.Int32"
+                      description="The ODBC C data type for binding numeric data."
+                      expressionType="Notify"
+                      name="BindNumericAs">0</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Determines how the component would bind columns of (multi)-byte string types (i.e., SQL_CHAR, SQL_VARCHAR, SQL_LONGVARCHAR). The options are: Unicode (SQL_C_WCHAR) and ANSI (SQL_C_CHAR)."
+                      expressionType="Notify"
+                      name="BindCharColumnsAs">0</property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\Staging\Reload table with current data\ODBC Destination.Connections[ODBCConnection]"
+                      connectionManagerID="Package.ConnectionManagers[PostgreSQL35W.tfSettlementsStaging]"
+                      connectionManagerRefId="Package.ConnectionManagers[PostgreSQL35W.tfSettlementsStaging]"
+                      description="The ODBC runtime connection used to access the database."
+                      name="ODBCConnection" />
+                  </connections>
+                  <inputs>
+                    <input
+                      refId="Package\Staging\Reload table with current data\ODBC Destination.Inputs[ODBC Destination Input]"
+                      errorOrTruncationOperation="Insert"
+                      errorRowDisposition="FailComponent"
+                      hasSideEffects="true"
+                      name="ODBC Destination Input"
+                      truncationRowDisposition="FailComponent">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\Staging\Reload table with current data\ODBC Destination.Inputs[ODBC Destination Input].Columns[tl_name]"
+                          cachedDataType="nText"
+                          cachedName="tl_name"
+                          externalMetadataColumnId="Package\Staging\Reload table with current data\ODBC Destination.Inputs[ODBC Destination Input].ExternalColumns[tl_name]"
+                          lineageId="Package\Staging\Reload table with current data\ODBC Source.Outputs[ODBC Source Output].Columns[tl_name]" />
+                        <inputColumn
+                          refId="Package\Staging\Reload table with current data\ODBC Destination.Inputs[ODBC Destination Input].Columns[hassettlements]"
+                          cachedDataType="i4"
+                          cachedName="hassettlements"
+                          externalMetadataColumnId="Package\Staging\Reload table with current data\ODBC Destination.Inputs[ODBC Destination Input].ExternalColumns[hassettlements]"
+                          lineageId="Package\Staging\Reload table with current data\ODBC Source.Outputs[ODBC Source Output].Columns[hassettlements]" />
+                      </inputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\Staging\Reload table with current data\ODBC Destination.Inputs[ODBC Destination Input].ExternalColumns[tl_name]"
+                          dataType="wstr"
+                          length="20"
+                          name="tl_name" />
+                        <externalMetadataColumn
+                          refId="Package\Staging\Reload table with current data\ODBC Destination.Inputs[ODBC Destination Input].ExternalColumns[hassettlements]"
+                          dataType="i4"
+                          name="hassettlements" />
+                      </externalMetadataColumns>
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\Staging\Reload table with current data\ODBC Destination.Outputs[ODBC Destination Error Output]"
+                      isErrorOut="true"
+                      name="ODBC Destination Error Output">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\Staging\Reload table with current data\ODBC Destination.Outputs[ODBC Destination Error Output].Columns[tl_name]"
+                          dataType="wstr"
+                          externalMetadataColumnId="Package\Staging\Reload table with current data\ODBC Destination.Inputs[ODBC Destination Input].ExternalColumns[tl_name]"
+                          length="20"
+                          lineageId="Package\Staging\Reload table with current data\ODBC Destination.Outputs[ODBC Destination Error Output].Columns[tl_name]"
+                          name="tl_name" />
+                        <outputColumn
+                          refId="Package\Staging\Reload table with current data\ODBC Destination.Outputs[ODBC Destination Error Output].Columns[hassettlements]"
+                          dataType="i4"
+                          externalMetadataColumnId="Package\Staging\Reload table with current data\ODBC Destination.Inputs[ODBC Destination Input].ExternalColumns[hassettlements]"
+                          lineageId="Package\Staging\Reload table with current data\ODBC Destination.Outputs[ODBC Destination Error Output].Columns[hassettlements]"
+                          name="hassettlements" />
+                        <outputColumn
+                          refId="Package\Staging\Reload table with current data\ODBC Destination.Outputs[ODBC Destination Error Output].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\Staging\Reload table with current data\ODBC Destination.Outputs[ODBC Destination Error Output].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\Staging\Reload table with current data\ODBC Destination.Outputs[ODBC Destination Error Output].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\Staging\Reload table with current data\ODBC Destination.Outputs[ODBC Destination Error Output].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\Staging\Reload table with current data\ODBC Source"
+                  componentClassID="Attunity.SSISODBCSrc"
+                  description="ODBC Source"
+                  name="ODBC Source"
+                  usesDispositions="true"
+                  version="7">
+                  <properties>
+                    <property
+                      dataType="System.String"
+                      description="The name of the table to be fetched."
+                      expressionType="Notify"
+                      name="TableName"></property>
+                    <property
+                      dataType="System.String"
+                      description="The SQL command to be executed."
+                      expressionType="Notify"
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=15.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">SELECT
+TL_Name
+, CASE when sum(IsSettling) &gt; 0 then 1 else 0 end as HasSettlements
+FROM (
+         select p.name as TL_Name
+              , case when t.nu_dse__current_stage__c != 'New' then 1 else 0 end as IsSettling
+
+         from datalake_sf.sf_nu_dse_tradeline_c_src t
+    inner join datalake_sf.sf_nu_dse_program_c_src p on t.nu_dse__program__c = p.id
+     ) dtData
+group by TL_Name</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specify the number of rows fetched per batch."
+                      expressionType="Notify"
+                      name="BatchSize">1000</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Determines the chunk size allocation for LOB columns"
+                      expressionType="Notify"
+                      name="LobChunkSize">32768</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Determines how the component exposes CHAR columns. If False, CHAR columns are exposed as (multi-)byte strings (DT_STR), if True, CHAR columns are exposed as wide strings (DT_WSTR)"
+                      expressionType="Notify"
+                      name="ExposeCharColumnsAsUnicode">false</property>
+                    <property
+                      dataType="System.Int32"
+                      description="The number of seconds to wait for an SQL statement to execute before returning to the application."
+                      expressionType="Notify"
+                      name="StatementTimeout">0</property>
+                    <property
+                      dataType="System.Int32"
+                      description="The code page to use when code page information is unavailable from the data source."
+                      expressionType="Notify"
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Int32"
+                      description="The method used for fetching data."
+                      expressionType="Notify"
+                      name="FetchMethod">1</property>
+                    <property
+                      dataType="System.Int32"
+                      description="The ODBC C data type for binding numeric data."
+                      expressionType="Notify"
+                      name="BindNumericAs">0</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Determines how the component would bind columns of (multi)-byte string types (i.e., SQL_CHAR, SQL_VARCHAR, SQL_LONGVARCHAR). The options are: Unicode (SQL_C_WCHAR) and ANSI (SQL_C_CHAR)."
+                      expressionType="Notify"
+                      name="BindCharColumnsAs">0</property>
+                    <property
+                      dataType="System.Int32"
+                      description="The mode used to access the database."
+                      expressionType="Notify"
+                      name="AccessMode"
+                      typeConverter="AccessMode">1</property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\Staging\Reload table with current data\ODBC Source.Connections[ODBCConnection]"
+                      connectionManagerID="Package.ConnectionManagers[RedshiftProd32.rstewart]"
+                      connectionManagerRefId="Package.ConnectionManagers[RedshiftProd32.rstewart]"
+                      description="The ODBC runtime connection used to access the database."
+                      name="ODBCConnection" />
+                  </connections>
+                  <outputs>
+                    <output
+                      refId="Package\Staging\Reload table with current data\ODBC Source.Outputs[ODBC Source Output]"
+                      errorRowDisposition="FailComponent"
+                      name="ODBC Source Output"
+                      truncationRowDisposition="FailComponent">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\Staging\Reload table with current data\ODBC Source.Outputs[ODBC Source Output].Columns[tl_name]"
+                          dataType="nText"
+                          externalMetadataColumnId="Package\Staging\Reload table with current data\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[tl_name]"
+                          lineageId="Package\Staging\Reload table with current data\ODBC Source.Outputs[ODBC Source Output].Columns[tl_name]"
+                          name="tl_name" />
+                        <outputColumn
+                          refId="Package\Staging\Reload table with current data\ODBC Source.Outputs[ODBC Source Output].Columns[hassettlements]"
+                          dataType="i4"
+                          externalMetadataColumnId="Package\Staging\Reload table with current data\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[hassettlements]"
+                          lineageId="Package\Staging\Reload table with current data\ODBC Source.Outputs[ODBC Source Output].Columns[hassettlements]"
+                          name="hassettlements" />
+                      </outputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\Staging\Reload table with current data\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[tl_name]"
+                          dataType="nText"
+                          name="tl_name" />
+                        <externalMetadataColumn
+                          refId="Package\Staging\Reload table with current data\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[hassettlements]"
+                          dataType="i4"
+                          name="hassettlements" />
+                      </externalMetadataColumns>
+                    </output>
+                    <output
+                      refId="Package\Staging\Reload table with current data\ODBC Source.Outputs[ODBC Source Error Output]"
+                      isErrorOut="true"
+                      name="ODBC Source Error Output">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\Staging\Reload table with current data\ODBC Source.Outputs[ODBC Source Error Output].Columns[tl_name]"
+                          dataType="nText"
+                          externalMetadataColumnId="Package\Staging\Reload table with current data\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[tl_name]"
+                          lineageId="Package\Staging\Reload table with current data\ODBC Source.Outputs[ODBC Source Error Output].Columns[tl_name]"
+                          name="tl_name" />
+                        <outputColumn
+                          refId="Package\Staging\Reload table with current data\ODBC Source.Outputs[ODBC Source Error Output].Columns[hassettlements]"
+                          dataType="i4"
+                          externalMetadataColumnId="Package\Staging\Reload table with current data\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[hassettlements]"
+                          lineageId="Package\Staging\Reload table with current data\ODBC Source.Outputs[ODBC Source Error Output].Columns[hassettlements]"
+                          name="hassettlements" />
+                        <outputColumn
+                          refId="Package\Staging\Reload table with current data\ODBC Source.Outputs[ODBC Source Error Output].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\Staging\Reload table with current data\ODBC Source.Outputs[ODBC Source Error Output].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\Staging\Reload table with current data\ODBC Source.Outputs[ODBC Source Error Output].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\Staging\Reload table with current data\ODBC Source.Outputs[ODBC Source Error Output].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+              </components>
+              <paths>
+                <path
+                  refId="Package\Staging\Reload table with current data.Paths[ODBC Source Output]"
+                  endId="Package\Staging\Reload table with current data\ODBC Destination.Inputs[ODBC Destination Input]"
+                  name="ODBC Source Output"
+                  startId="Package\Staging\Reload table with current data\ODBC Source.Outputs[ODBC Source Output]" />
+              </paths>
+            </pipeline>
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\Staging\Update Scorecard"
+          DTS:CreationName="Microsoft.ExecuteSQLTask"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{21AB5E62-69D2-4B3D-AFA1-89F7B574C74B}"
+          DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Update Scorecard"
+          DTS:ThreadHint="1">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{25ee79ca-09fc-4f10-a46e-980746233454}"
+              SQLTask:SqlStatementSource="UPDATE &quot;Scorecard&quot;&#xA;&#xA;    set &quot;previousSettlements&quot; = hassettlements&#xA;FROM tmp_previoussettlement&#xA; where  &quot;Scorecard&quot;.programname =   tl_name" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+      <DTS:PrecedenceConstraints>
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\Staging.PrecedenceConstraints[Constraint]"
+          DTS:CreationName=""
+          DTS:DTSID="{65CEE688-31A6-486F-8DE9-FFD9BBD9B408}"
+          DTS:From="Package\Staging\clear tmp table"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint"
+          DTS:To="Package\Staging\Reload table with current data" />
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\Staging.PrecedenceConstraints[Constraint 1]"
+          DTS:CreationName=""
+          DTS:DTSID="{D84D7583-06C3-4203-918A-F7AAD9D2FBDB}"
+          DTS:From="Package\Staging\Reload table with current data"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint 1"
+          DTS:To="Package\Staging\Update Scorecard" />
+      </DTS:PrecedenceConstraints>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
+<!--If you manually edit this section and make a mistake, you can delete it. -->
+<!--The package will still be able to load normally but the previous layout information will be lost and the designer will automatically re-arrange the elements on the design surface.-->
+<Objects
+  Version="8">
+  <!--Each node below will contain properties that do not affect runtime behavior.-->
+  <Package
+    design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="222,42"
+          Id="Package\Production\clear tmp table"
+          TopLeft="28,16" />
+        <NodeLayout
+          Size="222,42"
+          Id="Package\Production\Reload table with current data"
+          TopLeft="28,65.5" />
+        <NodeLayout
+          Size="222,42"
+          Id="Package\Production\Update Scorecard"
+          TopLeft="28,115" />
+        <EdgeLayout
+          Id="Package\Production.PrecedenceConstraints[Constraint]"
+          TopLeft="28,37">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,43.8333333333333"
+              Start="0,0"
+              End="-7.5,43.8333333333333">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="-18.5,0" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-18.5,0"
+                    Point2="-22.5,0"
+                    Point3="-22.5,4" />
+                  <mssgle:LineSegment
+                    End="-22.5,39.8333333333333" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-22.5,39.8333333333333"
+                    Point2="-22.5,43.8333333333333"
+                    Point3="-18.5,43.8333333333333" />
+                  <mssgle:LineSegment
+                    End="-7.5,43.8333333333333" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Production.PrecedenceConstraints[Constraint 1]"
+          TopLeft="28,92.1666666666667">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,43.8333333333333"
+              Start="0,0"
+              End="-7.5,43.8333333333333">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="-18.5,0" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-18.5,0"
+                    Point2="-22.5,0"
+                    Point3="-22.5,4" />
+                  <mssgle:LineSegment
+                    End="-22.5,39.8333333333333" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-22.5,39.8333333333333"
+                    Point2="-22.5,43.8333333333333"
+                    Point3="-18.5,43.8333333333333" />
+                  <mssgle:LineSegment
+                    End="-7.5,43.8333333333333" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <ContainerLayout
+          HeaderHeight="43"
+          IsExpanded="True"
+          PanelSize="282,212"
+          Size="282,255"
+          Id="Package\Production"
+          TopLeft="417,34" />
+        <NodeLayout
+          Size="222,42"
+          Id="Package\Staging\clear tmp table"
+          TopLeft="28,14" />
+        <NodeLayout
+          Size="222,42"
+          Id="Package\Staging\Reload table with current data"
+          TopLeft="28,63.5" />
+        <NodeLayout
+          Size="222,42"
+          Id="Package\Staging\Update Scorecard"
+          TopLeft="28,113" />
+        <EdgeLayout
+          Id="Package\Staging.PrecedenceConstraints[Constraint]"
+          TopLeft="28,35">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,43.8333333333333"
+              Start="0,0"
+              End="-7.5,43.8333333333333">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="-18.5,0" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-18.5,0"
+                    Point2="-22.5,0"
+                    Point3="-22.5,4" />
+                  <mssgle:LineSegment
+                    End="-22.5,39.8333333333333" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-22.5,39.8333333333333"
+                    Point2="-22.5,43.8333333333333"
+                    Point3="-18.5,43.8333333333333" />
+                  <mssgle:LineSegment
+                    End="-7.5,43.8333333333333" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Staging.PrecedenceConstraints[Constraint 1]"
+          TopLeft="28,90.1666666666667">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,43.8333333333333"
+              Start="0,0"
+              End="-7.5,43.8333333333333">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="-18.5,0" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-18.5,0"
+                    Point2="-22.5,0"
+                    Point3="-22.5,4" />
+                  <mssgle:LineSegment
+                    End="-22.5,39.8333333333333" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-22.5,39.8333333333333"
+                    Point2="-22.5,43.8333333333333"
+                    Point3="-18.5,43.8333333333333" />
+                  <mssgle:LineSegment
+                    End="-7.5,43.8333333333333" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <ContainerLayout
+          HeaderHeight="43"
+          IsExpanded="True"
+          PanelSize="255,210"
+          Size="255,253"
+          Id="Package\Staging"
+          TopLeft="132,32" />
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+  <TaskHost
+    design-time-name="Package\Production\Reload table with current data">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
+        <NodeLayout
+          Size="142,42"
+          Id="Package\Production\Reload table with current data\ODBC Source"
+          TopLeft="159,58" />
+        <NodeLayout
+          Size="163,42"
+          Id="Package\Production\Reload table with current data\ODBC Destination"
+          TopLeft="163,153" />
+        <EdgeLayout
+          Id="Package\Production\Reload table with current data.Paths[ODBC Source Output]"
+          TopLeft="230,100">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="14.5,53"
+              Start="0,0"
+              End="14.5,45.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,22.5" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,22.5"
+                    Point2="0,26.5"
+                    Point3="4,26.5" />
+                  <mssgle:LineSegment
+                    End="10.5,26.5" />
+                  <mssgle:CubicBezierSegment
+                    Point1="10.5,26.5"
+                    Point2="14.5,26.5"
+                    Point3="14.5,30.5" />
+                  <mssgle:LineSegment
+                    End="14.5,45.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\Production\Reload table with current data\ODBC Destination">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <TaskHost
+    design-time-name="Package\Staging\Reload table with current data">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
+        <NodeLayout
+          Size="142,42"
+          Id="Package\Staging\Reload table with current data\ODBC Source"
+          TopLeft="159,58" />
+        <NodeLayout
+          Size="163,42"
+          Id="Package\Staging\Reload table with current data\ODBC Destination"
+          TopLeft="163,153" />
+        <EdgeLayout
+          Id="Package\Staging\Reload table with current data.Paths[ODBC Source Output]"
+          TopLeft="230,100">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="14.5,53"
+              Start="0,0"
+              End="14.5,45.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,22.5" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,22.5"
+                    Point2="0,26.5"
+                    Point3="4,26.5" />
+                  <mssgle:LineSegment
+                    End="10.5,26.5" />
+                  <mssgle:CubicBezierSegment
+                    Point1="10.5,26.5"
+                    Point2="14.5,26.5"
+                    Point3="14.5,30.5" />
+                  <mssgle:LineSegment
+                    End="14.5,45.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\Staging\Reload table with current data\ODBC Destination">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\Staging\Reload table with current data\ODBC Source">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+</Objects>]]></DTS:DesignTimeProperties>
+</DTS:Executable>
