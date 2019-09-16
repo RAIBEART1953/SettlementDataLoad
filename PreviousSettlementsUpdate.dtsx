@@ -11,8 +11,8 @@
   DTS:LocaleID="1033"
   DTS:ObjectName="PreviousSettlementsUpdate"
   DTS:PackageType="5"
-  DTS:VersionBuild="8"
-  DTS:VersionGUID="{2C94ADF8-C0E1-42A8-A5F2-75738EE7B97D}">
+  DTS:VersionBuild="12"
+  DTS:VersionGUID="{E216632A-CDA7-4534-A43D-7CE36E412F37}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">8</DTS:Property>
   <DTS:ConnectionManagers>
@@ -27,7 +27,7 @@
           <DTS:Password
             DTS:Name="pwd"
             Sensitive="1"
-            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAwBOuxLnrgECzQK6HR+NDbwAAAAAIAAAARABUAFMAAAAQZgAAAAEAACAAAABo8xeDJTlG1bG771pyfZ9cUOG9Zi2N5pzqpcZv9GQmCgAAAAAOgAAAAAIAACAAAADfCY7Ujff+ORfCZD4f54/NsCUsl1EFtAuH3yhuUflk/yAAAACFwtIYiIGre+sJYQG5HUi/KuV8QRbTiasCxg6gTwzFmkAAAACcE5diGA1UIelRUZ/Bh2qcHwSmOmRDeEdzf/cTrRFPybv4V1HcNd39LIPpd7L7tuKCu8NtKi/7IfeBIBCOqbMI</DTS:Password>
+            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAwBOuxLnrgECzQK6HR+NDbwAAAAAIAAAARABUAFMAAAAQZgAAAAEAACAAAABlVHmzFghAC0Wp/AXzpoVar5IPni6SWUitbq2KK4Z0NwAAAAAOgAAAAAIAACAAAACkOZgrhP0ZY0UDYOreULZoGc0LKgEiF1gDE9L3VsLFhiAAAADL/l3R8j9qwaJBp8xUD7SN4RhxIHTmLggmWc0gIiPv8UAAAAD+V7ED/tcMq2eRDm56oqS9ZivthBiLTDy0d9qXuERoMEkYLKn5dbWBKaYlAs0xddYppvZD6vEpo0MoLM8Fk8S0</DTS:Password>
         </DTS:ConnectionManager>
       </DTS:ObjectData>
     </DTS:ConnectionManager>
@@ -42,7 +42,7 @@
           <DTS:Password
             DTS:Name="pwd"
             Sensitive="1"
-            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAwBOuxLnrgECzQK6HR+NDbwAAAAAIAAAARABUAFMAAAAQZgAAAAEAACAAAAAnuWezWrjaWdk7CeVEeXpi4hTawuK3sf+Me2MJvUKECwAAAAAOgAAAAAIAACAAAAD7oxIjcn8O1u3L86jCjPRukCI6aZLDIC2F0LAXBGIl8CAAAACXko95Gj5cTnMYa6Bawykh6ogDhAPCpyqPkvu8G4XJaEAAAACh22rCioVVDv7sT9y0XkUV0V54+ljd3qqdyNplja2qzN9TQCv8YotsImJCwKbdXkHUEE8HhE/g6CbbyrjWG17x</DTS:Password>
+            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAwBOuxLnrgECzQK6HR+NDbwAAAAAIAAAARABUAFMAAAAQZgAAAAEAACAAAACmAzAnG3k/zM/qxhF4KdIbTzdV355OSZcT/6Z+/rivWgAAAAAOgAAAAAIAACAAAADk+H1oW46lXkPhLRWwmNly0YjsoX+6nrE7H8t78xp9wiAAAAA9WGD45ViJEYbvXapZpGgztnpjusnJMeWJVovCD7YGdEAAAABf52FM7/VlW71psHQgvp8dbSAAw/4m+d1ajZcOVxBL3cGh+GMH3xgY8Bjdk6/2hstthYA8Dq8r/83sZHnBNEIn</DTS:Password>
         </DTS:ConnectionManager>
       </DTS:ObjectData>
     </DTS:ConnectionManager>
@@ -57,7 +57,7 @@
           <DTS:Password
             DTS:Name="pwd"
             Sensitive="1"
-            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAwBOuxLnrgECzQK6HR+NDbwAAAAAIAAAARABUAFMAAAAQZgAAAAEAACAAAADs/7bQuow6eBOcmwCiuiRJGuNIdcZOgA3uenDR1WnCkQAAAAAOgAAAAAIAACAAAABmBU50SeObCnY1jMCm2xIfsAI/iOPwKoApal4A+TbRZSAAAACzZAH/Iv+WUCMhumTk5+Mkg84/HYqol61PykHmmTS2N0AAAAA1dEnT1UA9NZlFfgGF0yhvKnNN1PVAs0VU9Z70ihm5+/HBAEpLrdlm1p5tKaXuNERzWwvtS7onjfXZOvrTd9tb</DTS:Password>
+            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAwBOuxLnrgECzQK6HR+NDbwAAAAAIAAAARABUAFMAAAAQZgAAAAEAACAAAAAlJTScBTq4tG08bAx73Iez3GNSyEpnzNKPpYBczw/w9gAAAAAOgAAAAAIAACAAAABNOsbYaxkD2rD1oweoofmpj+4GzGzEQHhh29bXktf64iAAAAAJQuRnFccqGNATe7zDRhYrgddGzGQtxGZTcmMFTHggNkAAAADETcje75eZwZsqvR726yOyV1chwYqY73zsp6alhb5kSWJkqoIf2tZOxZHk3iiu/Ep89Av3+b/nBMJ+ytyQrNJb</DTS:Password>
         </DTS:ConnectionManager>
       </DTS:ObjectData>
     </DTS:ConnectionManager>
@@ -260,12 +260,18 @@
 TL_Name
 , CASE when sum(IsSettling) &gt; 0 then 1 else 0 end as HasSettlements
 FROM (
-         select p.name as TL_Name
-              , case when t.nu_dse__current_stage__c != 'New' then 1 else 0 end as IsSettling
-
-         from datalake_sf.sf_nu_dse_tradeline_c_src t
-    inner join datalake_sf.sf_nu_dse_program_c_src p on t.nu_dse__program__c = p.id
-     ) dtData
+select
+      t.name                                                                as TL_Name
+     , case when dtOfferStatus.tradeline_id__c is not null then 1 else 0 end as IsSettling
+from datalake_sf.sf_nu_dse_tradeline_c_src t
+         inner join datalake_sf.sf_nu_dse_program_c_src p on t.nu_dse__program__c = p.id
+         left outer join datalake_sf.sf_nu_dse_offer_c_src o on t.id = o.tradeline_id__c
+         left outer join (SELECT tradeline_id__c
+                          FROM datalake_sf.sf_nu_dse_offer_c_src o
+                          where lower(o.nu_dse__status__c) = 'accepted'
+                            and lower(o.sub_status__c) = 'authorization obtained') dtOfferStatus
+                         on t.name = dtOfferStatus.tradeline_id__c
+) dtData
 group by TL_Name</property>
                     <property
                       dataType="System.Int32"
@@ -412,7 +418,7 @@ group by TL_Name</property>
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
               SQLTask:Connection="{B03DCEB9-4D8A-464B-B54B-067F4DE0D319}"
-              SQLTask:SqlStatementSource="UPDATE &quot;Scorecard&quot;&#xA;&#xA;    set &quot;previousSettlements&quot; = hassettlements&#xA;FROM tmp_previoussettlement&#xA; where  &quot;Scorecard&quot;.programname =   tl_name" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+              SQLTask:SqlStatementSource="UPDATE &quot;Scorecard&quot;&#xA;&#xA;    set &quot;previousSettlements&quot; = hassettlements&#xA;FROM tmp_previoussettlement&#xA; where  &quot;Scorecard&quot;.tradelinename =   tl_name" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
           </DTS:ObjectData>
         </DTS:Executable>
       </DTS:Executables>
@@ -1001,7 +1007,7 @@ group by TL_Name</property>
     design-time-name="Package\Production\Reload table with current data">
     <LayoutInfo>
       <GraphLayout
-        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
         <NodeLayout
           Size="142,42"
           Id="Package\Production\Reload table with current data\ODBC Source"
@@ -1041,9 +1047,7 @@ group by TL_Name</property>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="0,0,0,0"
-              RelativePosition="Any" />
+            <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
       </GraphLayout>
@@ -1059,6 +1063,14 @@ group by TL_Name</property>
         <Name>TableInfoObjectType</Name>
         <Value
           type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\Production\Reload table with current data\ODBC Source">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
       </Property>
     </Properties>
   </PipelineComponentMetadata>

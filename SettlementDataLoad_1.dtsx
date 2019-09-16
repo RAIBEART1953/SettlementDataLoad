@@ -11,8 +11,8 @@
   DTS:LocaleID="1033"
   DTS:ObjectName="SettlementDataLoad_1"
   DTS:PackageType="5"
-  DTS:VersionBuild="3"
-  DTS:VersionGUID="{81B5D1BB-CC70-48A3-B464-EE9C4FE495C8}">
+  DTS:VersionBuild="4"
+  DTS:VersionGUID="{260A60AE-2F72-40DC-9494-48DA798A5DD5}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">8</DTS:Property>
   <DTS:ConnectionManagers>
@@ -27,7 +27,7 @@
           <DTS:Password
             DTS:Name="pwd"
             Sensitive="1"
-            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAwBOuxLnrgECzQK6HR+NDbwAAAAAIAAAARABUAFMAAAAQZgAAAAEAACAAAADYUUmory4EIVUrkf2XpurpoHOpO366GIjnH7RwXoBdGAAAAAAOgAAAAAIAACAAAABJyQIyAhmGiVsqbll9chEctceZo2V3Ds50PBEdHqzMjSAAAAC+/n+SLph9FjTg6rgelO8KvYhZ50VfbG4rglYoKyLNF0AAAAC+DdheqNVFTEjp18lrHSJUoQOwpZkH31Ys+kR7HfXN7mAIrCkC5IGI3OVgCOqBLdFA+Zkzge6yRI+yziFE+0co</DTS:Password>
+            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAwBOuxLnrgECzQK6HR+NDbwAAAAAIAAAARABUAFMAAAAQZgAAAAEAACAAAADZ4ziyA+aoshrpR6gxVo4rmzAUXg8Jrgp+iaxtaiAglgAAAAAOgAAAAAIAACAAAAD3uBtNcHe5yHHsqGn0fQcwsqGkBVrw4947rK2S1krB7CAAAABzGi3vGfKrPaPAVzJvbeHn1tuH8qimotC1P+3twsv7dUAAAADSgcHd//GD5OaLc48Oriv2/MiUWhAcDLIk656IUdROQJe1ps0wezLVAehatC45/TEF/U74QjxiCFRWmfrOZ+n8</DTS:Password>
         </DTS:ConnectionManager>
       </DTS:ObjectData>
     </DTS:ConnectionManager>
@@ -831,6 +831,22 @@ ORDER BY assu.account_total_score desc, assu.account_total_score_rank;</property
         </pipeline>
       </DTS:ObjectData>
     </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Update Account_Score_Summary"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{EDC0DD62-4B31-4FF9-8F05-A52DEFBA6F2C}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Update Account_Score_Summary"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{3287B6DE-F745-450F-AE94-491765673C68}"
+          SQLTask:SqlStatementSource="update account_score_summary&#xA;set account_overall_rank = t.account_overall_rank&#xA;FROM (select business_dt,&#xA;       run_number,&#xA;       client_account_id,&#xA;       rank() over (order by account_index_value asc) as account_overall_rank&#xA;from setl.account_score_summary&#xA;where (business_dt = (SELECT max (business_dt) FROM processing_calendar)&#xA;    AND run_number = (SELECT max (run_number) FROM processing_calendar WHERE business_dt = (SELECT max (business_dt) FROM processing_calendar)))&#xA;group by business_dt, run_number, client_account_id, account_index_value&#xA;order by account_index_value asc, client_account_id) t&#xA;where (account_score_summary.business_dt = (SELECT max (business_dt) FROM processing_calendar)&#xA;    AND account_score_summary.run_number = (SELECT max (run_number) FROM processing_calendar WHERE business_dt = (SELECT max (business_dt) FROM processing_calendar)))&#xA;    and (account_score_summary.client_account_id = t.client_account_id&#xA;    and account_score_summary.business_dt = t.business_dt&#xA;    and account_score_summary.run_number = t.run_number);" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
   </DTS:Executables>
   <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
 <!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
@@ -848,6 +864,10 @@ ORDER BY assu.account_total_score desc, assu.account_total_score_rank;</property
           Size="125,42"
           Id="Package\Scorecard"
           TopLeft="139,55" />
+        <NodeLayout
+          Size="236,42"
+          Id="Package\Update Account_Score_Summary"
+          TopLeft="376,63" />
       </GraphLayout>
     </LayoutInfo>
   </Package>
